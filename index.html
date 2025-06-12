@@ -1,3 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>N.AI.IN - Smarter Search</title>
+</head>
+<body>
+  <h1>Welcome to N.AI.IN</h1>
+  <p>The future of AI search — faster and better than Google.</p>
+
+  <!-- Login Button -->
+  <button onclick="signInWithGoogle()">Sign in with Gmail</button>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+
+  <!-- Firebase Config and Auth Code -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAZ88k3qpNWsiblF2Axnf6p7TYGib8uo2k",
+      authDomain: "n-ai-in.firebaseapp.com",
+      projectId: "n-ai-in",
+      storageBucket: "n-ai-in.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Sign in with Gmail
+    function signInWithGoogle() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider)
+        .then((result) => {
+          const user = result.user;
+          alert("Signed in: " + user.email);
+        })
+        .catch((error) => {
+          alert("Error: " + error.message);
+        });
+    }
+  </script>
+</body>
+</html>
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
