@@ -1,4 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>N.AI.IN - Smarter Search</title>
+  <style>
+    body {
+      background: #0f2027;
+      background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
+      font-family: sans-serif;
+      text-align: center;
+      color: white;
+      padding: 100px 20px;
+    }
+    h1 { font-size: 3em; margin-bottom: 10px; }
+    p { font-size: 1.2em; margin-bottom: 30px; }
+    input[type="text"] {
+      width: 60%;
+      padding: 15px;
+      font-size: 1.2em;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 1.2em;
+      margin-left: 10px;
+      border-radius: 8px;
+      background-color: #00bcd4;
+      color: white;
+      border: none;
+    }
+    iframe {
+      width: 90%;
+      height: 500px;
+      margin-top: 40px;
+      border: none;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>N.AI.IN 🔍</h1>
+  <p>Search smarter, better & faster. Built by India, for the world.</p>
+  <input type="text" id="searchInput" placeholder="Search anything...">
+  <button onclick="doSearch()">Search</button>
 
+  <div id="resultBox" style="display:none;">
+    <iframe id="searchFrame"></iframe>
+  </div>
+
+  <script>
+    function doSearch() {
+      const query = document.getElementById("searchInput").value;
+      if (query) {
+        document.getElementById("searchFrame").src =
+          "https://www.bing.com/search?q=" + encodeURIComponent(query);
+        document.getElementById("resultBox").style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
