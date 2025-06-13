@@ -1,197 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>N.AI.IN - Smarter Search</title>
-</head>
-<body>
-  <h1>Welcome to N.AI.IN</h1>
-  <p>The future of AI search — faster and better than Google.</p>
-
-  <!-- Login Button -->
-  <button onclick="signInWithGoogle()">Sign in with Gmail</button>
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
-
-  <!-- Firebase Config and Auth Code -->
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAZ88k3qpNWsiblF2Axnf6p7TYGib8uo2k",
-      authDomain: "n-ai-in.firebaseapp.com",
-      projectId: "n-ai-in",
-      storageBucket: "n-ai-in.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
-
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    // Sign in with Gmail
-    function signInWithGoogle() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider)
-        .then((result) => {
-          const user = result.user;
-          alert("Signed in: " + user.email);
-        })
-        .catch((error) => {
-          alert("Error: " + error.message);
-        });
-    }
-  </script>
-</body>
-</html>
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-
-<script>
-  // Replace these with your actual Firebase config values
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-</script>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>N.AI.IN - Smarter Search</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>N.AI.IN – Smarter Search</title>
   <style>
     body {
-      background: #0f2027;
-      background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
-      font-family: sans-serif;
-      text-align: center;
-      color: white;
-      padding: 100px 20px;
-    }
-    h1 { font-size: 3em; margin-bottom: 10px; }
-    p { font-size: 1.2em; margin-bottom: 30px; }
-    input[type="text"] {
-      width: 60%;
-      padding: 15px;
-      font-size: 1.2em;
-      border-radius: 8px;
-      border: none;
-    }
-    button {
-      padding: 15px 30px;
-      font-size: 1.2em;
-      margin-left: 10px;
-      border-radius: 8px;
-      background-color: #00bcd4;
-      color: white;
-      border: none;
-    }
-    iframe {
-      width: 90%;
-      height: 500px;
-      margin-top: 40px;
-      border: none;
-      border-radius: 10px;
-    }
-  </style>
-</head>
-<body>
-  <h1>N.AI.IN 🔍</h1>
-  <p>Search smarter, better & faster. Built by India, for the world.</p>
-  <input type="text" id="searchInput" placeholder="Search anything...">
-  <button onclick="doSearch()">Search</button>
-
-  <div id="resultBox" style="display:none;">
-    <iframe id="searchFrame"></iframe>
-  </div>
-
-  <script>
-    function doSearch() {
-      const query = document.getElementById("searchInput").value;
-      if (query) {
-        document.getElementById("searchFrame").src =
-          "https://www.bing.com/search?q=" + encodeURIComponent(query);
-        document.getElementById("resultBox").style.display = "block";
-      }
-    }
-  </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>N.ai.in – Smarter Search</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
       margin: 0;
-      background-color: #f8f9fa;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: white;
+      text-align: center;
     }
-    h1 {
-      color: #111;
+    .navbar {
+      display: flex;
+      justify-content: flex-end;
+      padding: 16px;
     }
-    form {
+    .navbar button {
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+    .logo {
+      font-size: 60px;
+      margin-top: 100px;
+      font-weight: bold;
+      color: #202124;
+    }
+    .search-container {
+      margin-top: 30px;
+    }
+    .search-box {
+      width: 50%;
+      padding: 12px;
+      font-size: 18px;
+      border-radius: 24px;
+      border: 1px solid #ddd;
+    }
+    .buttons {
       margin-top: 20px;
     }
-    input[type="text"] {
-      width: 300px;
-      padding: 10px;
-      font-size: 16px;
-    }
-    button {
+    .buttons button {
       padding: 10px 20px;
+      margin: 5px;
       font-size: 16px;
-      margin-left: 10px;
-      background-color: #007bff;
-      color: white;
       border: none;
+      background-color: #f8f9fa;
+      border-radius: 4px;
       cursor: pointer;
     }
-    button:hover {
-      background-color: #0056b3;
+    .footer {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      font-size: 14px;
+      color: #555;
     }
   </style>
 </head>
 <body>
-  <h1>N.ai.in – Smarter Search</h1>
-  <form action="https://duckduckgo.com/" method="get" target="_blank">
-    <input type="text" name="q" placeholder="Search smarter..." required />
-    <button type="submit">Search</button>
-  </form>
+  <div class="navbar">
+    <button onclick="window.location.href='login.html'">Sign In</button>
+  </div>  <div class="logo">N.AI.IN</div>  <div class="search-container">
+    <input type="text" class="search-box" placeholder="Search smarter with N.AI.IN...">
+    <div class="buttons">
+      <button onclick="alert('Search coming soon!')">N.AI.IN Search</button>
+      <button onclick="alert('Smart surprise!')">I'm Feeling Smart</button>
+    </div>
+  </div>  <div class="footer">
+    About &nbsp; Privacy &nbsp; Terms &nbsp; Language: English (India)
+  </div>
 </body>
 </html>
-<h2>Login to n.ai.in</h2>
-<button onclick="googleLogin()">Login with Gmail</button>
-
-<script>
-  function googleLogin() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider)
-      .then((result) => {
-        const user = result.user;
-        alert("Welcome " + user.displayName);
-        // Optional: Redirect to another page after login
-        // window.location.href = "/dashboard.html";
-      })
-      .catch((error) => {
-        console.error("Error logging in:", error);
-      });
-  }
-</script>
