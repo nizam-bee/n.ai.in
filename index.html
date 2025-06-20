@@ -1,378 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FFAM AI Tool - Create Apps Instantly</title>
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-functions-compat.js"></script>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    .app-preview {
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    }
-    .logo-preview {
-      transition: all 0.3s ease;
-    }
-    .feature-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-    .loading-spinner {
-      border-top-color: #3498db;
-      animation: spinner 0.8s linear infinite;
-    }
-    @keyframes spinner {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n.ai.in - AI Search Engine</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui;
+            background: linear-gradient(135deg, #f0f4ff, #e6f7ff);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+        }
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #2563eb, #1e40af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p.subtitle {
+            font-size: 1.3rem;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+        .status-card {
+            background: #f1f5f9;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            text-align: left;
+        }
+        .status-card h2 {
+            color: #2563eb;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+        .steps { margin-top: 30px; text-align: left; }
+        .steps h3 { margin: 20px 0 10px; color: #2563eb; }
+        ul { padding-left: 25px; margin-bottom: 20px; }
+        li { margin: 10px 0; }
+        code {
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .domain-info {
+            display: inline-block;
+            background: #dbeafe;
+            color: #2563eb;
+            padding: 8px 15px;
+            border-radius: 30px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
+            .container { padding: 25px; }
+        }
+    </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-  <!-- Header -->
-  <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg">
-    <div class="container mx-auto px-4 py-6 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <i class="fas fa-robot text-3xl"></i>
-        <h1 class="text-2xl font-bold">FFAM AI Tool</h1>
-      </div>
-      <div id="auth-container"></div>
-    </div>
-  </header>
-
-  <!-- Hero Section -->
-  <section class="py-16 px-4 text-center">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-4xl font-bold text-gray-800 mb-4">Create Android & iOS Apps in Minutes</h2>
-      <p class="text-xl text-gray-600 mb-10">Describe your app. Generate the code. Publish instantly. No coding required.</p>
-      
-      <div class="bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto">
-        <h3 class="text-2xl font-semibold mb-6">Try It Now</h3>
-        <div id="app-generator"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features Section -->
-  <section class="py-16 bg-gray-100">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Powerful Features</h2>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="feature-card bg-white rounded-xl shadow-md p-6 transition-all">
-          <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-            <i class="fas fa-bolt text-blue-600 text-2xl"></i>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">Instant App Creation</h3>
-          <p class="text-gray-600">Describe your app in natural language and get a fully functional app in minutes.</p>
+<body>
+    <div class="container">
+        <h1>n.ai.in</h1>
+        <p class="subtitle">AI-Powered Search Engine</p>
+        
+        <div class="status-card">
+            <h2>✅ Deployment Status: Active</h2>
+            <p>Your Vercel deployment is working correctly.</p>
         </div>
         
-        <div class="feature-card bg-white rounded-xl shadow-md p-6 transition-all">
-          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-            <i class="fas fa-cloud-download-alt text-green-600 text-2xl"></i>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">One-Click AAB Export</h3>
-          <p class="text-gray-600">Download ready-to-publish app bundles directly to your device.</p>
-        </div>
+        <div class="domain-info">n-xxye-nizamuddin-s-projects.vercel.app</div>
         
-        <div class="feature-card bg-white rounded-xl shadow-md p-6 transition-all">
-          <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-            <i class="fas fa-language text-purple-600 text-2xl"></i>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">AI-Powered Localization</h3>
-          <p class="text-gray-600">Automatically translate your app to multiple languages with perfect lip-sync.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-gray-800 text-white py-12">
-    <div class="container mx-auto px-4 text-center">
-      <p class="text-xl font-semibold mb-4">FFAM AI - The Future of App Development</p>
-      <p class="text-gray-400 mb-6">Create, customize, and publish apps without writing a single line of code</p>
-      <div class="flex justify-center space-x-4">
-        <a href="#" class="text-blue-400 hover:text-blue-300"><i class="fab fa-github text-2xl"></i></a>
-        <a href="#" class="text-blue-400 hover:text-blue-300"><i class="fab fa-twitter text-2xl"></i></a>
-        <a href="#" class="text-blue-400 hover:text-blue-300"><i class="fab fa-linkedin text-2xl"></i></a>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    // Firebase configuration - Replace with your actual config
-    const firebaseConfig = {
-      apiKey: "AIzaSyDummyKeyDummyKeyDummyKeyDummy",
-      authDomain: "ffam-ai-demo.firebaseapp.com",
-      projectId: "ffam-ai-demo",
-      storageBucket: "ffam-ai-demo.appspot.com",
-      messagingSenderId: "1234567890",
-      appId: "1:1234567890:web:abc123def456ghi789jkl"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-    const functions = firebase.functions();
-
-    // DOM elements
-    const authContainer = document.getElementById('auth-container');
-    const appGenerator = document.getElementById('app-generator');
-
-    // Authentication state handler
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        renderLoggedInUI(user);
-        renderAppGenerator();
-      } else {
-        renderLoginUI();
-      }
-    });
-
-    // Render login UI
-    function renderLoginUI() {
-      authContainer.innerHTML = `
-        <button id="google-login" class="bg-white text-gray-800 px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-gray-100 transition">
-          <i class="fab fa-google text-blue-500"></i>
-          Sign in with Google
-        </button>
-      `;
-      
-      document.getElementById('google-login').addEventListener('click', () => {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider);
-      });
-      
-      appGenerator.innerHTML = `
-        <div class="text-center py-10">
-          <p class="text-lg mb-6">Please sign in to create your apps</p>
-          <button id="main-login" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition">
-            Sign In to Get Started
-          </button>
-        </div>
-      `;
-      
-      document.getElementById('main-login').addEventListener('click', () => {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider);
-      });
-    }
-
-    // Render UI for logged in users
-    function renderLoggedInUI(user) {
-      authContainer.innerHTML = `
-        <div class="flex items-center gap-3">
-          <img src="${user.photoURL || 'https://i.pravatar.cc/40'}" alt="Profile" class="w-10 h-10 rounded-full">
-          <div>
-            <p class="font-medium">${user.displayName || 'User'}</p>
-            <button id="logout-btn" class="text-sm text-blue-200 hover:text-white">Sign Out</button>
-          </div>
-        </div>
-      `;
-      
-      document.getElementById('logout-btn').addEventListener('click', () => {
-        auth.signOut();
-      });
-    }
-
-    // Render app generator UI
-    function renderAppGenerator() {
-      appGenerator.innerHTML = `
-        <div class="space-y-6">
-          <div>
-            <label class="block text-gray-700 mb-2">App Name</label>
-            <input type="text" id="app-name" placeholder="My Awesome App" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-          
-          <div>
-            <label class="block text-gray-700 mb-2">Logo Letter</label>
-            <div class="flex items-center gap-4">
-              <input type="text" id="logo-letter" maxlength="1" value="A" class="w-16 px-4 py-2 border rounded-lg text-center text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <div id="logo-preview" class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">A</div>
-            </div>
-          </div>
-          
-          <div>
-            <label class="block text-gray-700 mb-2">App Description</label>
-            <textarea id="app-description" placeholder="Describe your app in detail..." rows="4" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-          </div>
-          
-          <div>
-            <label class="block text-gray-700 mb-2">App Type</label>
-            <select id="app-type" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="ott">OTT Video Platform</option>
-              <option value="social">Social Media App</option>
-              <option value="ecommerce">E-Commerce Store</option>
-              <option value="game">Mobile Game</option>
-              <option value="utility">Utility App</option>
-            </select>
-          </div>
-          
-          <div class="pt-4">
-            <button id="generate-btn" class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition flex justify-center items-center gap-2">
-              <span>Generate App</span>
-              <i class="fas fa-bolt"></i>
-            </button>
-          </div>
-          
-          <div id="result-container" class="hidden">
-            <div class="mt-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
-              <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-semibold">Your App is Ready!</h3>
-                <i class="fas fa-check-circle text-green-500 text-2xl"></i>
-              </div>
-              
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div class="app-preview rounded-lg overflow-hidden shadow-md">
-                  <div class="h-48 bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center">
-                    <div class="text-white text-center">
-                      <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <span id="result-logo" class="text-2xl font-bold">A</span>
-                      </div>
-                      <h4 id="result-name" class="text-xl font-bold">App Name</h4>
-                    </div>
-                  </div>
-                  <div class="p-4 bg-white">
-                    <p class="text-sm text-gray-600">Home Screen Preview</p>
-                  </div>
-                </div>
-                
-                <div>
-                  <div class="mb-4">
-                    <h4 class="font-medium mb-2">App Details</h4>
-                    <ul class="space-y-2 text-sm">
-                      <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>Android App Bundle (AAB)</span></li>
-                      <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>iOS App Package (IPA)</span></li>
-                      <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>Firebase Backend</span></li>
-                      <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> <span>Admin Dashboard</span></li>
+        <div class="steps">
+            <h3>Next Steps to Fix Custom Domain:</h3>
+            <ul>
+                <li>Go to your Vercel dashboard → Project → Settings → Domains</li>
+                <li>Add your custom domain: <code>n.ai.in</code></li>
+                <li>Add DNS records at your domain registrar:
+                    <ul>
+                        <li>Type: <code>A</code> | Name: <code>@</code> | Value: <code>76.76.21.21</code></li>
+                        <li>Type: <code>A</code> | Name: <code>@</code> | Value: <code>76.76.21.22</code></li>
+                        <li>Type: <code>CNAME</code> | Name: <code>www</code> | Value: <code>cname.vercel-dns.com</code></li>
                     </ul>
-                  </div>
-                  
-                  <div>
-                    <h4 class="font-medium mb-2">Next Steps</h4>
-                    <button id="download-btn" class="w-full bg-green-600 text-white py-2 rounded-lg font-medium hover:bg-green-700 transition flex justify-center items-center gap-2 mb-2">
-                      <i class="fas fa-download"></i>
-                      <span>Download AAB File</span>
-                    </button>
-                    <button id="publish-btn" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-medium hover:bg-indigo-700 transition flex justify-center items-center gap-2">
-                      <i class="fas fa-cloud-upload-alt"></i>
-                      <span>Publish to Play Store</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              
-              <div id="loading-container" class="hidden items-center justify-center py-4">
-                <div class="loading-spinner w-8 h-8 border-4 border-blue-200 rounded-full"></div>
-                <p class="ml-3">Generating your app bundle...</p>
-              </div>
-            </div>
-          </div>
+                </li>
+                <li>Wait 5-10 minutes for DNS changes to propagate</li>
+            </ul>
         </div>
-      `;
-
-      // Event listeners
-      document.getElementById('logo-letter').addEventListener('input', function() {
-        document.getElementById('logo-preview').textContent = this.value || 'A';
-      });
-
-      document.getElementById('generate-btn').addEventListener('click', generateApp);
-      document.getElementById('download-btn').addEventListener('click', downloadApp);
-      document.getElementById('publish-btn').addEventListener('click', publishApp);
-    }
-
-    // Generate app function
-    function generateApp() {
-      const appName = document.getElementById('app-name').value || 'My Awesome App';
-      const logoLetter = document.getElementById('logo-letter').value || 'A';
-      const description = document.getElementById('app-description').value || 'A powerful app created with FFAM AI';
-      const appType = document.getElementById('app-type').value;
-      
-      if (!appName.trim()) {
-        alert('Please enter an app name');
-        return;
-      }
-      
-      // Show loading state
-      const resultContainer = document.getElementById('result-container');
-      const loadingContainer = document.createElement('div');
-      loadingContainer.innerHTML = `
-        <div class="flex items-center justify-center py-10">
-          <div class="loading-spinner w-12 h-12 border-4 border-blue-200 rounded-full"></div>
-          <p class="ml-4 text-lg">Creating your app...</p>
-        </div>
-      `;
-      appGenerator.appendChild(loadingContainer);
-      
-      // Simulate AI generation (2 seconds)
-      setTimeout(() => {
-        appGenerator.removeChild(loadingContainer);
         
-        // Update result container
-        document.getElementById('result-name').textContent = appName;
-        document.getElementById('result-logo').textContent = logoLetter;
+        <p>Powered by Vercel | AI Search Technology</p>
+    </div>
+    
+    <script>
+        // Simple domain check
+        const currentDomain = window.location.hostname;
+        document.querySelector('.domain-info').textContent = currentDomain;
         
-        // Show result
-        resultContainer.classList.remove('hidden');
-        
-        // Scroll to result
-        resultContainer.scrollIntoView({ behavior: 'smooth' });
-      }, 2000);
-    }
-
-    // Download app function
-    function downloadApp() {
-      const loadingContainer = document.getElementById('loading-container');
-      loadingContainer.classList.remove('hidden');
-      
-      // Simulate download process
-      setTimeout(() => {
-        loadingContainer.classList.add('hidden');
-        
-        // Create a fake download
-        const appName = document.getElementById('app-name').value || 'my-app';
-        const fileName = `${appName.replace(/\s+/g, '-').toLowerCase()}.aab`;
-        
-        // Create a dummy file to download
-        const blob = new Blob(["This is a simulated AAB file"], { type: 'application/octet-stream' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        
-        alert('AAB file downloaded successfully! You can now upload it to Google Play Console');
-      }, 1500);
-    }
-
-    // Publish app function
-    function publishApp() {
-      const loadingContainer = document.getElementById('loading-container');
-      loadingContainer.classList.remove('hidden');
-      
-      // Simulate publishing process
-      setTimeout(() => {
-        loadingContainer.classList.add('hidden');
-        alert('Your app has been submitted to Google Play Console! It will be available after review.');
-      }, 3000);
-    }
-
-    // Initialize the app
-    document.addEventListener('DOMContentLoaded', () => {
-      if (!auth.currentUser) {
-        renderLoginUI();
-      }
-    });
-  </script>
+        // Add automatic success message
+        if (!currentDomain.includes('vercel.app')) {
+            document.querySelector('.status-card').innerHTML += `
+                <p class="success">✔️ Custom domain is working!</p>
+                <p>Your site is live at: https://${currentDomain}</p>
+            `;
+        } else {
+            document.querySelector('.status-card').innerHTML += `
+                <p class="error">⚠️ Using Vercel subdomain</p>
+                <p>Follow the steps below to connect your custom domain</p>
+            `;
+        }
+    </script>
 </body>
-  </html>
-  
+</html>
