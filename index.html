@@ -3,131 +3,560 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>n.ai.in - AI Search Engine</title>
+    <title>n.ai.in - AI-Powered Search Engine</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
         body {
-            font-family: 'Segoe UI', system-ui;
-            background: linear-gradient(135deg, #f0f4ff, #e6f7ff);
+            background-color: #ffffff;
+            color: #202124;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 15px 20px;
             align-items: center;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            color: rgba(0,0,0,0.87);
+            text-decoration: none;
+            font-size: 13px;
+            padding: 5px;
+        }
+        
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(3, auto);
+            gap: 15px;
+            margin: 0 15px;
+        }
+        
+        .app-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .app-icon:hover {
+            background-color: #f1f3f4;
+        }
+        
+        .profile-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a73e8, #4facfe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
             padding: 20px;
-            color: #1e293b;
-            line-height: 1.6;
+            flex: 1;
         }
-        .container {
-            max-width: 800px;
-            width: 100%;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(37, 99, 235, 0.1);
+        
+        .logo {
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
         }
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #2563eb, #1e40af);
+        
+        .logo-text {
+            font-size: 90px;
+            font-weight: 400;
+            background: linear-gradient(90deg, #1a73e8, #4facfe, #00f2fe);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            position: relative;
         }
-        p.subtitle {
-            font-size: 1.3rem;
-            color: #64748b;
+        
+        .logo-text span {
+            font-weight: 700;
+        }
+        
+        .ai-badge {
+            color: #1a73e8;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: -20px;
+            align-self: flex-end;
+            margin-right: 10px;
+            background: rgba(26, 115, 232, 0.1);
+            padding: 3px 10px;
+            border-radius: 12px;
+        }
+        
+        /* Search Box */
+        .search-container {
+            max-width: 584px;
+            width: 100%;
+            position: relative;
             margin-bottom: 30px;
         }
-        .status-card {
-            background: #f1f5f9;
-            padding: 25px;
-            border-radius: 15px;
-            margin: 25px 0;
-            text-align: left;
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            padding: 10px 15px;
+            transition: all 0.3s ease;
         }
-        .status-card h2 {
-            color: #2563eb;
-            margin-bottom: 15px;
+        
+        .search-box:hover, .search-box:focus-within {
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+            border-color: rgba(223,225,229,0);
+        }
+        
+        .search-icon {
+            color: #9aa0a6;
+            margin-right: 10px;
+        }
+        
+        #search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: transparent;
+        }
+        
+        .search-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .voice-icon, .camera-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #4285f4;
+        }
+        
+        /* Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .search-btn, .lucky-btn {
+            background-color: #f8f9fa;
+            border: 1px solid #f8f9fa;
+            border-radius: 4px;
+            color: #3c4043;
+            padding: 10px 16px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .search-btn:hover, .lucky-btn:hover {
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            background-color: #f8f9fa;
+            border: 1px solid #dadce0;
+            color: #202124;
+        }
+        
+        /* Clipboard Section */
+        .clipboard-section {
+            max-width: 584px;
+            width: 100%;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #5f6368;
+            font-size: 13px;
+        }
+        
+        .clipboard-icon {
+            color: #1a73e8;
+        }
+        
+        /* Sports and Weather Section */
+        .info-cards {
+            max-width: 584px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .card-title {
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #1a73e8;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .cricket-info {
+            font-size: 15px;
+            color: #202124;
+        }
+        
+        .cricket-team {
+            font-weight: 500;
+            margin-top: 5px;
+        }
+        
+        .cricket-score {
+            font-size: 13px;
+            color: #5f6368;
+        }
+        
+        .weather-info {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .success { color: #10b981; }
-        .error { color: #ef4444; }
-        .steps { margin-top: 30px; text-align: left; }
-        .steps h3 { margin: 20px 0 10px; color: #2563eb; }
-        ul { padding-left: 25px; margin-bottom: 20px; }
-        li { margin: 10px 0; }
-        code {
-            background: #e2e8f0;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
+        
+        .weather-temp {
+            font-size: 24px;
+            font-weight: 400;
         }
-        .domain-info {
-            display: inline-block;
-            background: #dbeafe;
-            color: #2563eb;
-            padding: 8px 15px;
-            border-radius: 30px;
-            margin: 15px 0;
+        
+        .weather-details {
+            font-size: 13px;
+            color: #5f6368;
+        }
+        
+        /* Shop Section */
+        .shop-section {
+            max-width: 584px;
+            width: 100%;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .shop-title {
             font-weight: 500;
+            color: #1a73e8;
         }
-        @media (max-width: 600px) {
-            h1 { font-size: 2.5rem; }
-            .container { padding: 25px; }
+        
+        .shop-button {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        
+        /* Search Query Section */
+        .query-section {
+            max-width: 584px;
+            width: 100%;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            background: #f8f9fa;
+        }
+        
+        .query-text {
+            font-size: 16px;
+            color: #202124;
+        }
+        
+        .query-text span {
+            font-weight: 500;
+            color: #1a73e8;
+        }
+        
+        /* Footer */
+        footer {
+            background: #f2f2f2;
+            padding: 0 20px;
+            margin-top: auto;
+        }
+        
+        .footer-location {
+            padding: 15px 30px;
+            border-bottom: 1px solid #dadce0;
+            color: #70757a;
+            font-size: 15px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 15px 20px;
+        }
+        
+        .footer-links a {
+            color: #70757a;
+            text-decoration: none;
+            padding: 15px;
+            white-space: nowrap;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer-section {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo-text {
+                font-size: 70px;
+            }
+            
+            .footer-links {
+                justify-content: center;
+            }
+            
+            .footer-section {
+                justify-content: center;
+            }
+            
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo-text {
+                font-size: 50px;
+            }
+            
+            .ai-badge {
+                margin-top: -10px;
+                font-size: 14px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .search-btn, .lucky-btn {
+                width: 100%;
+            }
+            
+            .nav-links {
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>n.ai.in</h1>
-        <p class="subtitle">AI-Powered Search Engine</p>
-        
-        <div class="status-card">
-            <h2>✅ Deployment Status: Active</h2>
-            <p>Your Vercel deployment is working correctly.</p>
+    <!-- Home Page -->
+    <div id="home-page">
+        <header>
+            <div class="nav-links">
+                <a href="#">Gmail</a>
+                <a href="#">Images</a>
+                <div class="app-grid">
+                    <div class="app-icon">
+                        <i class="fas fa-th"></i>
+                    </div>
+                </div>
+                <div class="profile-icon">N</div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="logo">
+                <div class="logo-text">n.<span>ai</span>.in</div>
+                <div class="ai-badge">AI-Powered Search</div>
+            </div>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <div class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <input type="text" id="search-input" autocomplete="off" autofocus>
+                    <div class="search-buttons">
+                        <div class="voice-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <div class="camera-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="search-btn">Search</button>
+                <button class="lucky-btn">I'm Feeling Lucky</button>
+            </div>
+            
+            <!-- Clipboard Notification -->
+            <div class="clipboard-section">
+                <div class="clipboard-icon">
+                    <i class="fas fa-paste"></i>
+                </div>
+                <div>Google pasted from your clipboard</div>
+            </div>
+            
+            <!-- Sports and Weather Cards -->
+            <div class="info-cards">
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-baseball-ball"></i>
+                        <span>Cricket: SL vs BAN</span>
+                    </div>
+                    <div class="cricket-info">
+                        <div>Tre... Stumps: Day 3</div>
+                        <div class="cricket-team">SL</div>
+                        <div class="cricket-score">368/4 (93)</div>
+                        <div class="cricket-team">BAN</div>
+                        <div class="cricket-score">495 (153.4)</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-cloud-sun"></i>
+                        <span>Warangal Weather</span>
+                    </div>
+                    <div class="weather-info">
+                        <div class="weather-temp">29°</div>
+                        <div class="weather-details">
+                            <div>Humidity: 25%</div>
+                            <div>Partly Cloudy</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Shop Section -->
+            <div class="shop-section">
+                <div class="shop-title">Shop SSBCrack</div>
+                <button class="shop-button">Visit Store</button>
+            </div>
+            
+            <!-- Query Section -->
+            <div class="query-section">
+                <div class="query-text">What are the <span>new and curious</span> of</div>
+            </div>
         </div>
-        
-        <div class="domain-info">n-xxye-nizamuddin-s-projects.vercel.app</div>
-        
-        <div class="steps">
-            <h3>Next Steps to Fix Custom Domain:</h3>
-            <ul>
-                <li>Go to your Vercel dashboard → Project → Settings → Domains</li>
-                <li>Add your custom domain: <code>n.ai.in</code></li>
-                <li>Add DNS records at your domain registrar:
-                    <ul>
-                        <li>Type: <code>A</code> | Name: <code>@</code> | Value: <code>76.76.21.21</code></li>
-                        <li>Type: <code>A</code> | Name: <code>@</code> | Value: <code>76.76.21.22</code></li>
-                        <li>Type: <code>CNAME</code> | Name: <code>www</code> | Value: <code>cname.vercel-dns.com</code></li>
-                    </ul>
-                </li>
-                <li>Wait 5-10 minutes for DNS changes to propagate</li>
-            </ul>
-        </div>
-        
-        <p>Powered by Vercel | AI Search Technology</p>
+
+        <footer>
+            <div class="footer-location">India</div>
+            <div class="footer-links">
+                <div class="footer-section">
+                    <a href="#">About</a>
+                    <a href="#">Advertising</a>
+                    <a href="#">Business</a>
+                    <a href="#">How Search works</a>
+                </div>
+                <div class="footer-section">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Settings</a>
+                </div>
+            </div>
+        </footer>
     </div>
-    
+
     <script>
-        // Simple domain check
-        const currentDomain = window.location.hostname;
-        document.querySelector('.domain-info').textContent = currentDomain;
+        // Set focus on search input
+        document.getElementById('search-input').focus();
         
-        // Add automatic success message
-        if (!currentDomain.includes('vercel.app')) {
-            document.querySelector('.status-card').innerHTML += `
-                <p class="success">✔️ Custom domain is working!</p>
-                <p>Your site is live at: https://${currentDomain}</p>
-            `;
-        } else {
-            document.querySelector('.status-card').innerHTML += `
-                <p class="error">⚠️ Using Vercel subdomain</p>
-                <p>Follow the steps below to connect your custom domain</p>
-            `;
+        // I'm Feeling Lucky button
+        document.querySelector('.lucky-btn').addEventListener('click', function() {
+            const luckyQueries = [
+                "What are the new and curious developments in AI?",
+                "Latest cricket scores and news",
+                "Weather forecast for my location",
+                "SSBCrack shop deals and offers",
+                "How n.ai.in is better than traditional search engines"
+            ];
+            const randomQuery = luckyQueries[Math.floor(Math.random() * luckyQueries.length)];
+            document.getElementById('search-input').value = randomQuery;
+        });
+        
+        // Simulate dynamic data updates
+        function updateDynamicData() {
+            // Update cricket score
+            const slScore = Math.floor(Math.random() * 20) + 368;
+            const slOvers = (Math.random() * 5 + 93).toFixed(1);
+            document.querySelector('.cricket-score:first-child').textContent = `${slScore}/${Math.floor(Math.random() * 3) + 4} (${slOvers})`;
+            
+            // Update temperature
+            const temp = (Math.random() * 3 + 27).toFixed(0);
+            document.querySelector('.weather-temp').textContent = `${temp}°`;
+            
+            // Update humidity
+            const humidity = Math.floor(Math.random() * 10) + 20;
+            document.querySelector('.weather-details div:first-child').textContent = `Humidity: ${humidity}%`;
         }
+        
+        // Update data every 30 seconds
+        setInterval(updateDynamicData, 30000);
+        
+        // Initial update
+        updateDynamicData();
     </script>
 </body>
 </html>
